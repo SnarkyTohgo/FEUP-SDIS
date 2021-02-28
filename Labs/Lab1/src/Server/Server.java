@@ -7,13 +7,12 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
-import java.util.Map;
 import java.util.TreeMap;
 
 public class Server extends Thread {
     public static Server instance = null;
 
-    private TreeMap lookupTable;
+    private static TreeMap lookupTable;
 
     private DatagramSocket socket;
     private boolean running;
@@ -45,18 +44,29 @@ public class Server extends Thread {
 
             InetAddress address = packet.getAddress();
             int port = packet.getPort();
-            String message = new String(packet.getData(), 0, packet.getLength());
-            // parse data and build reply
 
             packet = new DatagramPacket(buf, buf.length, address, port);
-            String received = new String(packet.getData(), 0, packet.getLength());
+            String request = new String(packet.getData(), 0, packet.getLength());
 
-            if (received.equals("end")) {
+            if (request.equals("end")) {
                 running = false;
                 continue;
             }
 
             try {
+                String[] msg = request.split(" ", 3);
+                String reply = "default reply";
+
+                if (msg[0].equals("REGISTER"))
+                    reply = String.valueOf(register(msg[1], msg[2]));
+
+
+                if (msg[0].equals("LOOKUP"))
+                    reply = lookup(msg[1]);
+
+
+                buf = reply.getBytes();
+                packet = new DatagramPacket(buf, buf.length, address, port);
                 socket.send(packet);
             } catch (IOException e) {
                 e.printStackTrace();
