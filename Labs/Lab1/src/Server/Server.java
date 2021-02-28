@@ -12,7 +12,7 @@ import java.util.TreeMap;
 public class Server extends Thread {
     public static Server instance = null;
 
-    private TreeMap lookupTable;
+    private static TreeMap lookupTable;
 
     private DatagramSocket socket;
     private boolean running;
@@ -44,7 +44,6 @@ public class Server extends Thread {
 
             InetAddress address = packet.getAddress();
             int port = packet.getPort();
-            String message = new String(packet.getData(), 0, packet.getLength());
 
             packet = new DatagramPacket(buf, buf.length, address, port);
             String request = new String(packet.getData(), 0, packet.getLength());
@@ -55,6 +54,19 @@ public class Server extends Thread {
             }
 
             try {
+                String[] msg = request.split(" ", 3);
+                String reply = "default reply";
+
+                if (msg[0].equals("REGISTER"))
+                    reply = String.valueOf(register(msg[1], msg[2]));
+
+
+                if (msg[0].equals("LOOKUP"))
+                    reply = lookup(msg[1]);
+
+
+                buf = reply.getBytes();
+                packet = new DatagramPacket(buf, buf.length, address, port);
                 socket.send(packet);
             } catch (IOException e) {
                 e.printStackTrace();
