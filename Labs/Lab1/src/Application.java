@@ -38,14 +38,14 @@ public class Application {
         setup();
 
         // REGISTER REQUEST EXAMPLE
-        String opRegister = "REGISTER";
-        ArrayList<String> paramsRegister = new ArrayList<>();
-        paramsRegister.add("www.fe.up.pt");
-        paramsRegister.add("10.227.240.205");
-
-        Message register = msgFactory.makeMessage(MessageType.REQUEST, opRegister, paramsRegister);
-        echo = client.sendRequest(register);
-        System.out.println(echo);
+//        String opRegister = "REGISTER";
+//        ArrayList<String> paramsRegister = new ArrayList<>();
+//        paramsRegister.add("www.fe.up.pt");
+//        paramsRegister.add("10.227.240.205");
+//
+//        Message register = msgFactory.makeMessage(MessageType.REQUEST, opRegister, paramsRegister);
+//        echo = client.sendRequest(register);
+//        System.out.println(echo);
 
         // LOOKUP REQUEST EXAMPLE
         String opLookup = "LOOKUP";
