@@ -55,13 +55,14 @@ public class Server extends Thread {
 
             try {
                 String[] msg = request.split(" ", 3);
-                String reply = "default reply";
+                String op = msg[0], DNS = msg[1], IP = msg[2];
+                String reply = "-1";
 
-                if (msg[0].equals("REGISTER"))
-                    reply = String.valueOf(register(msg[1], msg[2]));
+                if (op.equals("REGISTER"))
+                    reply = String.valueOf(register(DNS, IP));
 
 
-                if (msg[0].equals("LOOKUP"))
+                if (op.equals("LOOKUP"))
                     reply = lookup(msg[1]);
 
 
