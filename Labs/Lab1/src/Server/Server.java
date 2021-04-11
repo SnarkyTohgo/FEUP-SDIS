@@ -63,12 +63,10 @@ public class Server extends Thread {
                     reply = String.valueOf(register(DNS, IP));
                 }
 
-
                 if (op.equals("LOOKUP")) {
                     DNS = msg[1];
                     reply = lookup(DNS);
                 }
-
 
                 buf = reply.getBytes();
                 packet = new DatagramPacket(buf, buf.length, address, port);
